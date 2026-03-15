@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer Support • GrowX</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: #0B0F19;
+      color: white;
+      overflow-x: hidden;
+    }
+
+    /* TOPBAR */
+    .topbar {
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 215, 0, 0.05);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+    }
+
+    .brand {
+      font-size: 22px;
+      font-weight: 700;
+      background: linear-gradient(90deg, #FFD700, #fff, #FFD700);
+      background-size: 200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shine 4s linear infinite;
+    }
+
+    @keyframes shine {
+      0% {
+        background-position: 0%;
+      }
+      100% {
+        background-position: 200%;
+      }
+    }
+
+    .container {
+      padding: 25px;
+    }
+
+    /* CARD */
+    .card {
+      background: rgba(255, 215, 0, 0.05);
+      border: 1px solid rgba(255, 215, 0, 0.2);
+      backdrop-filter: blur(25px);
+      border-radius: 28px;
+      padding: 25px;
+      margin-bottom: 25px;
+      box-shadow: 0 0 50px rgba(255, 215, 0, .08);
+    }
+
+    .title {
+      font-size: 24px;
+      font-weight: 700;
+      color: #FFD700;
+      margin-bottom: 15px;
+    }
+
+    .badge {
+      background: #00ff8822;
+      color: #00ff88;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 13px;
+      display: inline-block;
+      margin-bottom: 15px;
+    }
+
+    /* BUTTON */
+    .btn {
+      margin-top: 15px;
+      padding: 14px;
+      border: none;
+      width: 100%;
+      border-radius: 25px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #FFD700, #FFB800);
+      color: #000;
+      cursor: pointer;
+      transition: .3s;
+      text-align: center;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 25px rgba(255, 215, 0, .7);
+    }
+
+    .copy-btn {
+      background: rgba(255, 255, 255, .1);
+      color: #fff;
+      font-size: 13px;
+    }
+
+    /* FAQ */
+    .faq-item {
+      margin-top: 12px;
+      background: rgba(255, 215, 0, 0.08);
+      padding: 15px;
+      border-radius: 18px;
+      cursor: pointer;
+    }
+
+    .faq-answer {
+      margin-top: 8px;
+      font-size: 14px;
+      opacity: .8;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height .4s ease;
+    }
+
+    /* FLOAT CHAT */
+    .chat-float {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: linear-gradient(135deg, #FFD700, #FFB800);
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      color: #000;
+      cursor: pointer;
+      box-shadow: 0 0 30px rgba(255, 215, 0, .8);
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-8px);
+      }
+      100% {
+        transform: translateY(0);
+      }
+    }
+
+    /* Styling for "Currently Online" */
+    .online-badge {
+      background-color: #28a745; /* Green for online */
+      color: white;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 13px;
+      display: inline-block;
+    }
+
+    /* Fix WhatsApp Button */
+    .whatsapp-btn {
+      display: block;
+      margin-top: 15px;
+      padding: 14px;
+      border: none;
+      width: 100%;
+      border-radius: 25px;
+      font-weight: 700;
+      background-color: #25D366;
+      color: #fff;
+      text-align: center;
+      font-size: 18px;
+      transition: 0.3s;
+    }
+
+    .whatsapp-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 25px rgba(0, 220, 0, .7);
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="topbar">
+  <div class="brand">GrowX</div>
+</div>
+
+<div class="container">
+
+  <div class="card">
+    <div class="title">Customer Support</div>
+    <div class="badge">🟢 Avg Response Time: 5–15 Minutes</div>
+
+    <p>
+      GrowX ek secure aur privacy-focused platform hai.
+      Hum kabhi bhi kisi user ka password nahi lete.
+      Sirf public link required hota hai.
+    </p>
+  </div>
+
+  <!-- WHATSAPP -->
+  <div class="card">
+    <div class="title">WhatsApp Support</div>
+    <!-- Updated badge: Green for online -->
+    <div class="online-badge">🟢 Currently Online</div>
+
+    <!-- WhatsApp Button -->
+    <a href="https://wa.me/7800584153" class="whatsapp-btn" target="_blank">
+      💬 Chat on WhatsApp
+    </a>
+  </div>
+
+  <!-- EMAIL -->
+  <div class="card">
+    <div class="title">Email Support</div>
+
+    <p id="mail1">hardffm90@gmail.com</p>
+    <button class="btn copy-btn" onclick="copyMail('mail1', this)">
+      📋 Copy Email
+    </button>
+
+    <p style="margin-top: 12px" id="mail2">hardffm91@gmail.com</p>
+    <button class="btn copy-btn" onclick="copyMail('mail2', this)">
+      📋 Copy Email
+    </button>
+  </div>
+
+  <!-- FAQ -->
+  <div class="card">
+    <div class="title">FAQ</div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      Q: Order kitne time me complete hota hai?
+      <div class="faq-answer">
+        Normally 5–60 minutes. Large orders may take longer.
+      </div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      Q: Kya password dena padega?
+      <div class="faq-answer">
+        Nahi. Hum kabhi password nahi lete.
+      </div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      Q: Refund policy kya hai?
+      <div class="faq-answer">
+        Agar order fail hota hai to amount automatically wallet me refund ho jata hai.
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FLOAT CHAT -->
+<div class="chat-float" onclick="whatsappPopup()">
+  💬
+</div>
+
+<script>
+
+  function whatsappPopup(){
+    window.open("https://whatsapp.com/channel/0029VbCBclKEgGfGSs1CEg0U", "_blank");
+  }
+
+  function copyMail(id, btn) {
+    let text = document.getElementById(id).innerText;
+
+    navigator.clipboard.writeText(text).then(() => {
+      btn.innerHTML = "Copied ✓";
+      btn.style.background = "#00ff88";
+      btn.style.color = "#000";
+
+      setTimeout(() => {
+        btn.innerHTML = "📋 Copy Email";
+        btn.style.background = "rgba(255,255,255,.1)";
+        btn.style.color = "#fff";
+      }, 2000);
+    });
+  }
+
+  function toggleFaq(el) {
+    let ans = el.querySelector(".faq-answer");
+    if (ans.style.maxHeight) {
+      ans.style.maxHeight = null;
+    } else {
+      ans.style.maxHeight = ans.scrollHeight + "px";
+    }
+  }
+
+</script>
+
+</body>
+</html>

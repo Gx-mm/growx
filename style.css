@@ -1,0 +1,313 @@
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:#020617;
+color:white;
+line-height:1.7;
+overflow-x:hidden;
+}
+
+/* LOADER */
+
+#loader{
+position:fixed;
+width:100%;
+height:100%;
+background:#020617;
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+z-index:9999;
+}
+
+.loader-logo{
+font-size:42px;
+font-weight:700;
+background:linear-gradient(90deg,#6366f1,#22c55e);
+-webkit-background-clip:text;
+color:transparent;
+margin-bottom:20px;
+}
+
+.loader-bar{
+width:200px;
+height:4px;
+background:#111827;
+border-radius:20px;
+overflow:hidden;
+}
+
+.loader-progress{
+height:100%;
+width:40%;
+background:linear-gradient(90deg,#6366f1,#22c55e);
+animation:loading 1.2s infinite;
+}
+
+@keyframes loading{
+0%{transform:translateX(-100%)}
+100%{transform:translateX(300%)}
+}
+
+/* HEADER */
+
+header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px 8%;
+background:rgba(2,6,23,0.9);
+backdrop-filter:blur(15px);
+position:fixed;
+width:100%;
+z-index:100;
+}
+
+.logo{
+font-size:26px;
+font-weight:700;
+}
+
+nav a{
+color:white;
+text-decoration:none;
+margin-left:25px;
+font-size:15px;
+opacity:.85;
+transition:.3s;
+}
+
+nav a:hover{
+opacity:1;
+color:#6366f1;
+}
+
+.login-btn{
+background:linear-gradient(90deg,#6366f1,#8b5cf6);
+padding:10px 25px;
+border-radius:40px;
+}
+
+/* HERO */
+
+.hero{
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+padding:120px 20px;
+background:radial-gradient(circle at top,#1e293b,#020617);
+}
+
+.hero-text{
+max-width:650px;
+text-align:center;
+background:rgba(255,255,255,0.05);
+backdrop-filter:blur(20px);
+padding:60px 40px;
+border-radius:20px;
+box-shadow:0 0 60px rgba(99,102,241,0.4);
+}
+
+.hero-text h1{
+font-size:50px;
+margin-bottom:10px;
+}
+
+.hero-text p{
+opacity:.85;
+margin-bottom:25px;
+}
+
+.hero-buttons a{
+background:linear-gradient(90deg,#6366f1,#8b5cf6);
+padding:14px 35px;
+border-radius:40px;
+color:white;
+text-decoration:none;
+font-weight:500;
+transition:.3s;
+}
+
+.hero-buttons a:hover{
+transform:scale(1.05);
+box-shadow:0 0 20px rgba(99,102,241,0.6);
+}
+
+/* FEATURES */
+
+.features{
+padding:120px 20px;
+text-align:center;
+}
+
+.features h2{
+font-size:36px;
+margin-bottom:60px;
+}
+
+.feature-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:30px;
+max-width:1100px;
+margin:auto;
+}
+
+.feature-box{
+background:rgba(255,255,255,0.04);
+padding:30px;
+border-radius:15px;
+transition:.3s;
+backdrop-filter:blur(10px);
+}
+
+.feature-box:hover{
+transform:translateY(-10px);
+box-shadow:0 0 25px rgba(99,102,241,0.5);
+}
+
+/* PHONE PREVIEW */
+
+.preview{
+padding:120px 20px;
+text-align:center;
+background:#020617;
+}
+
+.preview h2{
+font-size:34px;
+margin-bottom:40px;
+}
+
+.phone-slider{
+display:flex;
+gap:40px;
+justify-content:center;
+flex-wrap:wrap;
+}
+
+.phone-frame{
+width:260px;
+padding:10px;
+background:#000;
+border-radius:30px;
+box-shadow:0 0 40px rgba(99,102,241,0.4);
+transition:.4s;
+}
+
+.phone-frame img{
+width:100%;
+border-radius:20px;
+}
+
+/* USER GUIDE */
+
+.container{
+max-width:1100px;
+margin:auto;
+padding:100px 20px;
+}
+
+.section{
+margin-bottom:80px;
+}
+
+.card{
+background:rgba(255,255,255,0.05);
+padding:40px;
+border-radius:18px;
+backdrop-filter:blur(20px);
+box-shadow:0 0 40px rgba(99,102,241,0.2);
+}
+
+/* IMAGE FIX */
+
+.card img{
+width:100%;
+max-width:360px;
+display:block;
+margin:25px auto;
+border-radius:18px;
+box-shadow:0 0 25px rgba(99,102,241,0.4);
+}
+
+ul{
+margin-top:10px;
+padding-left:20px;
+}
+
+/* CONTACT */
+
+.contact{
+padding:80px 20px;
+text-align:center;
+background:#020617;
+}
+
+.contact-links{
+display:flex;
+gap:20px;
+justify-content:center;
+flex-wrap:wrap;
+margin-top:20px;
+}
+
+.contact-links a{
+background:linear-gradient(90deg,#6366f1,#8b5cf6);
+padding:12px 25px;
+border-radius:40px;
+color:white;
+text-decoration:none;
+transition:.3s;
+}
+
+.contact-links a:hover{
+box-shadow:0 0 15px rgba(99,102,241,0.7);
+}
+
+/* FOOTER */
+
+footer{
+text-align:center;
+padding:40px;
+background:#020617;
+opacity:.8;
+}
+
+/* SCROLL ANIMATION */
+
+.hidden{
+opacity:0;
+transform:translateY(60px);
+transition:all 0.8s ease;
+}
+
+.show{
+opacity:1;
+transform:translateY(0);
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+.hero-text h1{
+font-size:36px;
+}
+
+nav{
+display:none;
+}
+
+.phone-frame{
+width:200px;
+}
+
+}

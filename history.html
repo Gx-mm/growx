@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GrowX • Order History</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins', sans-serif; }
+
+    body {
+      background: #0B0F19;
+      color: white;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .topbar {
+      height: 65px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 215, 0, 0.05);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+    }
+
+    .brand {
+      font-size: 22px;
+      font-weight: 700;
+      background: linear-gradient(90deg, #FFD700, #fff, #FFD700);
+      background-size: 200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shine 4s linear infinite;
+    }
+
+    @keyframes shine {
+      0% { background-position: 0%; }
+      100% { background-position: 200%; }
+    }
+
+    .container {
+      padding: 20px;
+    }
+
+    .summary {
+      background: rgba(255, 215, 0, 0.05);
+      border: 1px solid rgba(255, 215, 0, 0.2);
+      border-radius: 20px;
+      padding: 15px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .summaryBox {
+      text-align: center;
+      flex: 1;
+    }
+
+    .summaryBox h3 {
+      color: #FFD700;
+      font-size: 20px;
+    }
+
+    .summaryBox p {
+      font-size: 12px;
+      opacity: .7;
+    }
+
+    .orderCard {
+      background: rgba(255, 215, 0, 0.05);
+      border: 1px solid rgba(255, 215, 0, 0.2);
+      border-radius: 20px;
+      padding: 16px;
+      margin-bottom: 15px;
+      box-shadow: 0 0 30px rgba(255, 215, 0, .1);
+      animation: fadeUp .5s ease forwards;
+      opacity: 0;
+    }
+
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 6px;
+      font-size: 14px;
+      word-break: break-word;
+    }
+
+    .status {
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .pending { background: #ffaa0022; color: #ffaa00; box-shadow: 0 0 10px #ffaa00; }
+    .completed { background: #00ff8822; color: #00ff88; box-shadow: 0 0 12px #00ff88; }
+    .cancelled { background: #ff444422; color: #ff4444; box-shadow: 0 0 12px #ff4444; }
+
+    .empty {
+      text-align: center;
+      margin-top: 60px;
+      opacity: .7;
+      animation: float 3s infinite ease-in-out;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0); }
+    }
+
+    .refresh {
+      text-align: center;
+      font-size: 12px;
+      opacity: .6;
+      margin-bottom: 10px;
+    }
+
+    /* Particles background styling */
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <canvas id="particles"></canvas>
+
+  <div class="topbar">
+    <div class="brand">GrowX</div>
+  </div>
+
+  <div class="container">
+
+    <div class="refresh" id="refreshText">↓ Pull to Refresh</div>
+
+    <div class="summary">
+      <div class="summaryBox">
+        <h3 id="totalOrders">0</h3>
+        <p>Total Orders</p>
+      </div>
+      <div class="summaryBox">
+        <h3 id="totalSpent">₹0</h3>
+        <p>Total Spent</p>
+      </div>
+    </div>
+
+    <div id="orderContainer"></div>
+
+  </div>
+
+  <script>
+    const API_URL = "https://script.google.com/macros/s/AKfycbwyVwqw06pRsHaoiPkG_Hx8ZeVcRXyNF4ZAi4kqRjOQuxCVirJJSeIJk5AfnZJU3Ge_ow/exec";
+
+    const userID = localStorage.getItem("userID");
+
+    if (!userID) {
+      window.location = "index.html";
+    }
+
+    function formatDate(dateString) {
+      const d = new Date(dateString);
+      return d.toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" }) +
+        " • " +
+        d.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
+    }
+
+    async function loadOrders() {
+      const res = await fetch(API_URL, {
+        method: "POST",
+        body: JSON.stringify({ action: "orders", userID: userID })
+      });
+
+      const data = await res.json();
+
+      const container = document.getElementById("orderContainer");
+      container.innerHTML = "";
+
+      if (!data || data.length === 0) {
+        container.innerHTML = `
+          <div class="empty">
+            <h3>📦 No Orders Yet</h3>
+            <p>Start your first order now 🚀</p>
+          </div>`;
+        return;
+      }
+
+      let totalSpent = 0;
+      document.getElementById("totalOrders").innerText = data.length;
+
+      data.forEach((o, index) => {
+        totalSpent += parseFloat(o.price) || 0;
+
+        let statusClass = "pending";
+        if (o.status.toLowerCase().includes("complete")) statusClass = "completed";
+        if (o.status.toLowerCase().includes("cancel")) statusClass = "cancelled";
+
+        container.innerHTML += `
+          <div class="orderCard" style="animation-delay:${index * 0.07}s">
+            <div class="row">
+              <strong>${o.service}</strong>
+              <span class="status ${statusClass}">${o.status}</span>
+            </div>
+
+            <div class="row">
+              <span>Order ID:</span>
+              <span>${o.orderID}</span>
+            </div>
+
+            <div class="row">
+              <span>User ID:</span>
+              <span>${o.userID}</span>
+            </div>
+
+            <div class="row">
+              <span>Qty:</span>
+              <span>${o.qty}</span>
+            </div>
+
+            <div class="row">
+              <span>Price:</span>
+              <span>₹${o.price}</span>
+            </div>
+
+            <div class="row">
+              <span>Date:</span>
+              <span>${formatDate(o.date)}</span>
+            </div>
+
+            <div class="row">
+              <span>Link:</span>
+              <span>${o.link ? `<a href="${o.link}" target="_blank" style="color:#FFD700">View</a>` : "-"}</span>
+            </div>
+
+          </div>`;
+      });
+
+      document.getElementById("totalSpent").innerText = "₹" + totalSpent.toFixed(2);
+    }
+
+    loadOrders();
+
+    /* Pull Refresh */
+
+    let startY = 0;
+
+    window.addEventListener("touchstart", e => {
+      startY = e.touches[0].clientY;
+    });
+
+    window.addEventListener("touchend", e => {
+      let endY = e.changedTouches[0].clientY;
+      if (endY - startY > 120) {
+        document.getElementById("refreshText").innerText = "Refreshing...";
+
+        setTimeout(() => {
+          loadOrders();
+          document.getElementById("refreshText").innerText = "↓ Pull to Refresh";
+        }, 800);
+      }
+    });
+
+    /* Particles Effect */
+    const canvas = document.getElementById("particles");
+    const ctx = canvas.getContext("2d");
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let particles = [];
+
+    for (let i = 0; i < 120; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        size: Math.random() * 2,
+        speed: Math.random() * 0.5
+      });
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "#ffd34d";
+
+      particles.forEach(p => {
+        p.y -= p.speed;
+
+        if (p.y < 0) {
+          p.y = canvas.height;
+        }
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+
+  </script>
+
+</body>
+</html>

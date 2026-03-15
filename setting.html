@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Settings • GrowX</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+min-height:100vh;
+background:#0B0F19;
+color:#fff;
+display:flex;
+flex-direction:column;
+}
+
+/* HEADER */
+.header{
+height:65px;
+display:flex;
+align-items:center;
+justify-content:center;
+position:relative;
+background:rgba(255,215,0,.05);
+backdrop-filter:blur(20px);
+border-bottom:1px solid rgba(255,215,0,.2);
+}
+
+.back{
+position:absolute;
+left:15px;
+font-size:22px;
+cursor:pointer;
+}
+
+.title{
+font-size:20px;
+font-weight:600;
+background:linear-gradient(90deg,#FFD700,#fff,#FFD700);
+background-size:200%;
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+animation:shine 4s linear infinite;
+}
+
+@keyframes shine{
+0%{background-position:0%}
+100%{background-position:200%}
+}
+
+/* CONTENT */
+.content{
+flex:1;
+display:flex;
+align-items:center;
+justify-content:center;
+padding:20px;
+}
+
+.card{
+width:100%;
+max-width:420px;
+background:rgba(255,215,0,.05);
+backdrop-filter:blur(25px);
+border-radius:30px;
+padding:20px;
+border:1px solid rgba(255,215,0,.2);
+box-shadow:0 20px 60px rgba(255,215,0,.1);
+}
+
+/* OPTIONS */
+.option{
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:14px;
+border-radius:20px;
+margin-bottom:12px;
+background:rgba(255,255,255,.08);
+cursor:pointer;
+transition:.2s;
+font-weight:500;
+}
+
+.option:active{
+transform:scale(.96);
+}
+
+.option span{
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+/* LOGOUT */
+.logout{
+margin-top:10px;
+width:100%;
+padding:14px;
+border:none;
+border-radius:22px;
+font-weight:700;
+background:linear-gradient(135deg,#ff3b3b,#ff0000);
+color:#fff;
+cursor:pointer;
+transition:.2s;
+}
+
+.logout:active{
+transform:scale(.95);
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+<div class="back" onclick="go('home.html')">←</div>
+<div class="title">Settings</div>
+</div>
+
+<div class="content">
+<div class="card">
+
+<div class="option" onclick="go('home.html')">
+<span>🏠 Home</span> →
+</div>
+
+<div class="option" onclick="go('order.html')">
+<span>🚀 New Order</span> →
+</div>
+
+<div class="option" onclick="go('addfund.html')">
+<span>💰 Add Funds</span> →
+</div>
+
+<div class="option" onclick="go('history.html')">
+<span>📜 Order History</span> →
+</div>
+
+<div class="option" onclick="go('customer.html')">
+<span>💬 Customer Support</span> →
+</div>
+
+<button class="logout" onclick="logout()">Logout</button>
+
+</div>
+</div>
+
+<script>
+const userID=localStorage.getItem("userID");
+if(!userID){
+window.location.replace("index.html");
+}
+
+function go(page){
+window.location.replace(page);
+}
+
+function logout(){
+localStorage.removeItem("userID");
+window.location.replace("index.html");
+}
+</script>
+
+</body>
+</html>

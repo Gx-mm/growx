@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>GrowX • Secure Login</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,sans-serif;}
+
+body{
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+color:white;
+background:
+radial-gradient(circle at 20% 20%,#1c2b4a,transparent 40%),
+radial-gradient(circle at 80% 0%,#0b1b38,transparent 40%),
+linear-gradient(180deg,#020617,#050b1a);
+}
+
+.card{
+width:90%;
+max-width:420px;
+padding:40px;
+border-radius:30px;
+background:rgba(255,255,255,0.05);
+backdrop-filter:blur(25px);
+border:1px solid rgba(255,215,0,.4);
+box-shadow:0 0 40px rgba(255,215,0,.25);
+}
+
+.logo{text-align:center;font-size:36px;font-weight:700;color:#FFD700;margin-bottom:6px;}
+.trust{text-align:center;font-size:13px;color:#ddd;margin-bottom:20px;}
+
+.badges{display:flex;justify-content:center;gap:10px;margin-bottom:20px;}
+.badge{background:rgba(255,255,255,0.08);padding:6px 12px;border-radius:20px;font-size:11px;}
+
+.inputBox{position:relative;}
+
+input{
+width:100%;
+padding:15px;
+margin:10px 0;
+border-radius:30px;
+border:1px solid rgba(255,255,255,0.15);
+background:rgba(0,0,0,.4);
+color:white;
+}
+
+.eye{
+position:absolute;
+right:18px;
+top:50%;
+transform:translateY(-50%);
+cursor:pointer;
+}
+
+button{
+width:100%;
+padding:15px;
+border:none;
+border-radius:40px;
+font-weight:600;
+cursor:pointer;
+margin-top:15px;
+background:linear-gradient(135deg,#FFD700,#FFB800);
+color:#111;
+}
+
+.loader{
+width:20px;height:20px;
+border:3px solid #111;
+border-top:3px solid transparent;
+border-radius:50%;
+animation:spin 1s linear infinite;
+margin:auto;
+}
+
+@keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
+
+.links{display:flex;justify-content:space-between;margin-top:15px;font-size:14px;}
+.link{color:#FFD700;cursor:pointer;}
+
+.hidden{display:none;}
+
+.popup{
+position:fixed;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%) scale(.8);
+background:#111;
+padding:30px 40px;
+border-radius:20px;
+text-align:center;
+box-shadow:0 0 40px rgba(255,215,0,.7);
+opacity:0;
+transition:.3s;
+}
+
+.popup.show{opacity:1;transform:translate(-50%,-50%) scale(1);}
+
+.success{color:#00ff9c;font-size:24px;margin-bottom:10px;}
+.error{color:#ff4d4d;font-size:24px;margin-bottom:10px;}
+
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+<div class="logo">GrowX</div>
+
+<div class="trust">
+India's Most Affordable SMM Platform<br>
+No.1 Trusted Social Media Growth Service
+</div>
+
+<div class="badges">
+<div class="badge">👥 10k+ Users</div>
+<div class="badge">⚡ Fast Delivery</div>
+<div class="badge">🕒 24×7 Support</div>
+</div>
+
+<!-- LOGIN -->
+
+<div id="loginBox">
+
+<input id="loginUser" placeholder="Username">
+
+<div class="inputBox">
+<input id="loginPass" type="password" placeholder="Password">
+<span class="eye" onclick="togglePass()">👁</span>
+</div>
+
+<button id="loginBtn" onclick="login()">Login</button>
+
+<div class="links">
+<div class="link" onclick="showSignup()">Create New Account</div>
+</div>
+
+</div>
+
+<!-- SIGNUP -->
+
+<div id="signupBox" class="hidden">
+
+<input id="suUser" placeholder="Username">
+
+<input id="suEmail" placeholder="Enter Gmail (example@gmail.com)">
+
+<input id="suContact" placeholder="Mobile Number">
+
+<div class="inputBox">
+<input id="suPass" type="password" placeholder="Password">
+<span class="eye" onclick="toggleSignupPass()">👁</span>
+</div>
+
+<button id="signupBtn" onclick="signup()">Create Account</button>
+
+<div class="links">
+<div class="link" onclick="showLogin()">Back to Login</div>
+</div>
+
+</div>
+
+</div>
+
+<div id="popup" class="popup"></div>
+
+<script>
+
+const API_URL="https://script.google.com/macros/s/AKfycbwyVwqw06pRsHaoiPkG_Hx8ZeVcRXyNF4ZAi4kqRjOQuxCVirJJSeIJk5AfnZJU3Ge_ow/exec";
+
+if(localStorage.getItem("userID")){
+location.href="home.html";
+}
+
+function togglePass(){
+loginPass.type = loginPass.type === "password" ? "text":"password";
+}
+
+function toggleSignupPass(){
+suPass.type = suPass.type === "password" ? "text":"password";
+}
+
+function showPopup(type,msg){
+const popup=document.getElementById("popup")
+popup.innerHTML=`<div class="${type}">${type=="success"?"✔":"⚠"}</div><p>${msg}</p>`
+popup.classList.add("show")
+setTimeout(()=>{popup.classList.remove("show")},2000)
+}
+
+function showSignup(){
+loginBox.classList.add("hidden")
+signupBox.classList.remove("hidden")
+}
+
+function showLogin(){
+signupBox.classList.add("hidden")
+loginBox.classList.remove("hidden")
+}
+
+async function login(){
+
+let username=document.getElementById("loginUser").value
+let password=document.getElementById("loginPass").value
+
+if(!username || !password){
+showPopup("error","Enter username & password")
+return
+}
+
+const btn=document.getElementById("loginBtn")
+btn.disabled=true
+btn.innerHTML=`<div class="loader"></div>`
+
+const res=await fetch(API_URL,{
+method:"POST",
+body:JSON.stringify({
+action:"login",
+username,
+password
+})
+})
+
+const data=await res.json()
+
+if(data.status=="success"){
+
+localStorage.setItem("userID",data.userID)
+localStorage.setItem("balance",data.balance)
+
+showPopup("success","Login Successful")
+
+setTimeout(()=>{
+location.href="home.html"
+},1200)
+
+}else{
+
+showPopup("error","Invalid Login")
+btn.disabled=false
+btn.innerHTML="Login"
+
+}
+
+}
+
+async function signup(){
+
+let username=document.getElementById("suUser").value.trim()
+let email=document.getElementById("suEmail").value.trim()
+let contact=document.getElementById("suContact").value.trim()
+let password=document.getElementById("suPass").value.trim()
+
+if(!username||!email||!contact||!password){
+showPopup("error","Fill all fields")
+return
+}
+
+if(!/^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(email)){
+showPopup("error","Enter valid Gmail (example@gmail.com)")
+return
+}
+
+if(!/^\d+$/.test(contact)){
+showPopup("error","Mobile must contain only digits")
+return
+}
+
+if(contact.length!==10){
+showPopup("error","Mobile number must be 10 digits")
+return
+}
+
+const btn=document.getElementById("signupBtn")
+btn.disabled=true
+btn.innerHTML=`<div class="loader"></div>`
+
+const res=await fetch(API_URL,{
+method:"POST",
+body:JSON.stringify({
+action:"signup",
+username,
+email,
+contact,
+password
+})
+})
+
+const data=await res.json()
+
+if(data.status=="success"){
+
+showPopup("success","Account Created")
+
+setTimeout(()=>{
+showLogin()
+},1500)
+
+}else{
+
+showPopup("error","Username already exists")
+btn.disabled=false
+btn.innerHTML="Create Account"
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
